@@ -27,6 +27,30 @@
 					</table>
 				</div>
 			</div>
-			
 		</div>
+		<br>
+		{% if products.has_other_pages %}
+		  <ul class="pagination">
+		    {% if products.has_previous %}
+		      <li><a class="page-link" href="?page={{ products.previous_page_number }}">Prev</a></li>
+		    {% else %}
+		      <li class="page-link"><span>&laquo;</span></li>
+		    {% endif %}
+		    {% for i in products.paginator.page_range %}
+		      {% if products.number == i %}
+		        <li class="p-2 bg-success text-white"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+		      {% else %}
+		        <li><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+		      {% endif %}
+		    {% endfor %}
+		    {% if products.has_next %}
+		      <li><a class="page-link" href="?page={{ products.next_page_number }}">Next</a></li>
+		    {% else %}
+		      <li class="page-link"><span>&raquo;</span></li>
+		    {% endif %}
+		  </ul>
+		{% endif %}
+
+		<br><br>
+		
 {% endblock content %}

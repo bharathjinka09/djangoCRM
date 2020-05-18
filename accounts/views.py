@@ -2,8 +2,11 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.forms import inlineformset_factory
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 from .models import *
 from .forms import OrderForm
+from .filters import OrderFilter
 # Create your views here.
 
 
@@ -25,9 +28,19 @@ def home(request):
 
 
 def products(request):
-    products = Product.objects.all()
+    products_list = Product.objects.all()[::-1]
+    page = request.GET.get('page', 1)
+    paginator = Paginator(products_list, 5)
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
 
-    return render(request, 'accounts/products.html', {'products': products})
+    context = {'products': products, 'page': int(page)}
+
+    return render(request, 'accounts/products.html', context)
 
 
 def customer(request, pk):
@@ -37,8 +50,12 @@ def customer(request, pk):
     orders = customer.order_set.all()
     order_count = orders.count()
 
+    myFilter = OrderFilter(request.GET, queryset=orders)
+    orders = myFilter.qs
+
     context = {'customer': customer,
-               'orders': orders, 'order_count': order_count}
+               'orders': orders, 'order_count': order_count,
+               'myFilter': myFilter}
 
     return render(request, 'accounts/customer.html', context)
 
@@ -47,7 +64,7 @@ def create_order(request, pk):
     OrderFormSet = inlineformset_factory(
         Customer, Order, fields=('product', 'status'), extra=10)
     customer = Customer.objects.get(id=pk)
-    formset = OrderFormSet(queryset=Order.objects.none(),instance=customer)
+    formset = OrderFormSet(queryset=Order.objects.none(), instance=customer)
     # form = OrderForm(initial={'customer':customer})
     if request.method == 'POST':
         # print(request.POST)

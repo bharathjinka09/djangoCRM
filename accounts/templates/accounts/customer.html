@@ -38,7 +38,7 @@
 		<div class="col">
 			<div class="card card-body">
 				<form method="get">
-
+					{{myFilter.form}}
 			    <button class="btn btn-primary" type="submit">Search</button>
 			  </form>
 			</div>
@@ -77,4 +77,39 @@
 			</div>
 		</div>
 	</div>
+	
+	<script type="text/javascript">
+			
+		var product = document.getElementById("id_product");
+		product.classList.add("form-control");
+		product.style.width = '50%';
+	</script>
+	
+	<script type="text/javascript">
+
+		var status_box = document.getElementById("id_status");
+		status_box.classList.add("form-control");
+		status_box.style.width = '50%';
+
+	</script>
+
+	<script type="text/javascript">
+		var id_start_date = document.getElementById("id_start_date");
+		id_start_date.classList.add("form-control");
+		id_start_date.style.width = '50%';
+
+	</script>
+
+	<script type="text/javascript">
+		var id_end_date = document.getElementById("id_end_date");
+		id_end_date.classList.add("form-control");
+		id_end_date.style.width = '50%';
+
+	</script>
+
+	<script type="text/javascript">
+		var id_end_date = document.getElementById("id_end_date");
+		id_end_date.classList.add("mb-2");
+	</script>
+	
 {% endblock content %}
