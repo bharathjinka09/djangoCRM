@@ -13,7 +13,7 @@ from django.contrib.auth.models import Group
 from .models import *
 from .forms import OrderForm, CreateUserForm
 from .filters import OrderFilter
-from .decorators import unauthenticated_user, allowed_users, admin_only
+from .decorators import unauthenticated_user, allowed_users
 # Create your views here.
 
 
@@ -27,12 +27,12 @@ def registerPage(request):
         if form.is_valid():
             user = form.save()
             username = form.cleaned_data.get('username')
-            
-            group = Group.objects.get(name = 'customer')
+
+            group = Group.objects.get(name='customer')
             user.groups.add(group)
 
             messages.success(request, 'Account created for ' + username)
-            
+
             return redirect('login')
 
     context = {'form': form}
@@ -64,7 +64,7 @@ def logoutUser(request):
 
 
 @login_required(login_url='login')
-@admin_only
+@allowed_users(allowed_roles=['admin'])
 def home(request):
     orders = Order.objects.all()
     customers = Customer.objects.all()
