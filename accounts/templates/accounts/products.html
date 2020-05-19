@@ -2,7 +2,7 @@
 <!-- {% include 'partials/messages.html' %} -->
 {% block content %}
 	<br>
-
+	{% if user %}	
 		<div class="row">
 			<div class="col-md">
 				<div class="card card-body">
@@ -28,6 +28,10 @@
 				</div>
 			</div>
 		</div>
+	{% else %}
+		<h1 class="text-center">You don't have permission to access this page</h1>
+
+	{% endif %}
 		<br>
 		{% if products.has_other_pages %}
 		  <ul class="pagination">

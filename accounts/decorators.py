@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 
 '''
 A decorator will take another function as a parameter
@@ -14,23 +14,27 @@ def unauthenticated_user(view_func):
             return redirect('home')
         else:
             return view_func(request, *args, **kwargs)
+            # return render(request,'accounts/unauthenticated_user.html')
 
     return wrapper_func
 
 
-def allowed_users(allowed_roles=[]):
-    def decorator(view_func):
-        def wrapper_func(request, *args, **kwargs):
+# def allowed_users(allowed_roles=[]):
+#     def decorator(view_func):
+#         def wrapper_funct(request, *args, **kwargs):
 
-            group = None
-            if request.user.groups.exists():
-                group = request.user.groups.all()[0].name
-                if group in allowed_roles:
-                    return view_func(request, *args, **kwargs)
-            else:
-                return HttpResponse('You are not authorized to view this page!')
-        return wrapper_func
-    return decorator
+#             group = None
+#             if request.user.groups.exists():
+#                 group = request.user.groups.all()[0].name
+#                 if group in allowed_roles:
+#                     # return view_func(request, *args, **kwargs)
+#                     return render(request,'accounts/dashboard.html')
+#             else:
+#                 # return HttpResponse('You are not authorized to view this page!')
+#             	return render(request,'accounts/unauthenticated_user.html')
+        		
+#         return wrapper_funct
+#     return decorator
 
 
 # def admin_only(view_func):
