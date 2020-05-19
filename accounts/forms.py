@@ -1,7 +1,9 @@
 from django.forms import ModelForm
 from django import forms
-from .models import Order
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
+from .models import Order
 
 class OrderForm(ModelForm):
     class Meta:
@@ -12,3 +14,8 @@ class OrderForm(ModelForm):
             'product': forms.Select(attrs={'class': 'form-control'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
         }
+
+class CreateUserForm(UserCreationForm):
+	class Meta:
+		model = User
+		fields = ['username','email','password1','password2']
