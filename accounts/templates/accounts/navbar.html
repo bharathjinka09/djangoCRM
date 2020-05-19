@@ -23,7 +23,8 @@
       </li>
     </ul>
   </div>
-
-  <span class="hello-msg">Hello, {{request.user}}</span>
-  <span><a class="btn btn-danger" href="{% url 'logout' %}">Logout</a></span>
+  <div>
+    <span class="hello-msg">Hello, {{request.user}}</span>
+    <span><a class="btn btn-danger" href="{% url 'logout' %}">Logout</a></span>
+  </div>
 </nav>
