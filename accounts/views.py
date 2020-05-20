@@ -146,7 +146,10 @@ def create_order(request, pk):
         form = OrderForm(request.POST)
         formset = OrderFormSet(request.POST, instance=customer)
         if formset.is_valid():
+
             formset.save()
+            messages.success(request, 'Order Created')
+
             return redirect('/')
 
     context = {'form': formset}
@@ -164,6 +167,8 @@ def update_order(request, pk):
         form = OrderForm(request.POST, instance=order)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Order Updated')
+
             return redirect('/')
 
     context = {'form': form}
@@ -176,6 +181,8 @@ def delete_order(request, pk):
     order = Order.objects.get(id=pk)
     if request.method == "POST":
         order.delete()
+        messages.success(request, 'Order Deleted')
+
         return redirect('/')
 
     context = {'item': order}
