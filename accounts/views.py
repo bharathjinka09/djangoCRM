@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.forms import inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 from django.contrib.auth import authenticate, login, logout
 
@@ -112,7 +114,16 @@ def accountSettings(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def products(request):
-    products = Product.objects.all()
+    products_list = Product.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(products_list, 10)
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
 
     return render(request, 'accounts/products.html', {'products': products})
 
