@@ -12,8 +12,8 @@ class OrderFilter(django_filters.FilterSet):
         model = Order
         fields = '__all__'
         exclude = ['customer', 'date_created']
-        # widgets = {
-  #           'customer': django_filters.Select(attrs={'class': 'form-control'}),
-  #           'product': django_filters.Select(attrs={'class': 'form-control'}),
-  #           'status': django_filters.Select(attrs={'class': 'form-control'}),
-  #       }
+        widgets = {
+            'customer': django_filters.ChoiceFilter(attrs={'class': 'form-control'}),
+            'product': django_filters.ChoiceFilter(attrs={'class': 'form-control'}),
+            'status': django_filters.ChoiceFilter(attrs={'class': 'form-control'}),
+        }
